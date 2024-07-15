@@ -1,18 +1,39 @@
-import { useState } from 'react'
-import './App.scss'
-import { Button } from 'react-bootstrap'
 import Header from './components/Header'
 import HomePage from './Pages/HomePage/HomePage';
 import Footer from './components/Footer';
+
+import './App.scss'
+
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import RecipePage from './Pages/RecipePage/RecipePage';
+import RootPage from './Pages/RootPage/RootPage';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootPage/>,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: '/:id',
+        element: <RecipePage />
+      }
+    ]
+  },
+]);
 
 
 function App() {
 
   return (
     <>
-    <Header/>
-    <HomePage/>
-     <Footer/>
+      <RouterProvider router={router} />
     </>
   )
 }

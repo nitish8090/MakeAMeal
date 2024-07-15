@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from .models import Recipe, Comment
-from .serializers import RecipeSerializer, CommentSerializer, RecipeWithCommentSerializer
+from .serializers import RecipeSerializer, CommentSerializer, RecipeDetailedSerializer
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -15,7 +15,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         except Recipe.DoesNotExist:
             return Response({"error": "Recipe not found"}, status=404)
         else:
-            serializer = RecipeWithCommentSerializer(recipe)
+            serializer = RecipeDetailedSerializer(recipe)
             return Response(serializer.data)
 
 

@@ -1,0 +1,21 @@
+.footer {
+    * {
+        color: white;
+    }
+
+    .footer-column {
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            padding: 0.25em;
+        }
+
+        .footer-column-heading {
+            font-weight: bold;
+        }
+    }
+
+}

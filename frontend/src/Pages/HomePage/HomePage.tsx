@@ -1,29 +1,62 @@
-import React from 'react'
-import { Button, Card, Col, Image } from 'react-bootstrap';
-import MealImage from '../../assets/meal-icon.png'
+import { useEffect, useState } from 'react'
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
+// import MealImage from '../../assets/meal-icon.png'
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import Recipe from '../../interfaces/Recipe.interface';
+
+import './HomePage.scss';
 
 function HomePage() {
+
+    const [recipes, setRecipes] = useState<Recipe[]>([])
+
+    useEffect(() => {
+        axios.get('http://localhost:8000/recipe-book/recipe/').then(
+            response => {
+                setRecipes(response.data)
+            }
+        ).catch(error => {
+            console.log(error)
+        })
+    }, [])
+
+
     return (
         <>
-            <div>
-                Is is cooking time yet?
-                <Col xs={6} md={4}>
-                    <Image src={MealImage} roundedCircle />
-                </Col>
+            <Container fluid className='px-4 banner bg-secondary d-flex align-items-center'>
+                <Row className=''>
+                    <div className='display-1'>
+                        Flavorful Journeys
+                    </div>
+                    <div className='display-3'>
+                        Discover Authentic Asian Recipes Here!
+                    </div>
+                </Row>
+            </Container>
+
+            <div className="recipe-cards">
+                <Container className='py-4'>
+                    <Row className='p-4'>
+                        {recipes.map(recipe => (
+                            <Col lg={3}>
+                                <Card className='recipe-card bg-primary'>
+                                    <Card.Img variant="top" src={`${import.meta.env.VITE_STATIC_IMAGE_URL}/${recipe.cover}`} />
+                                    <Card.Body>
+                                        <Card.Title>{recipe.name}</Card.Title>
+                                        <div className='d-flex justify-content-center'>
+                                            <Link to={`/${recipe.id}`}>
+                                                <Button className='px-4' variant="secondary">View</Button>
+                                            </Link>
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+                </Container>
             </div>
-            <div className="recepie-card">
-                <Card style={{ width: '18rem' }}>
-                    <Card.Body>
-                        <Card.Title>Recipe</Card.Title>
-                        <Card.Text>
-                            Some quick example text to build on the card title and make up the
-                            bulk of the card's content.
-                        </Card.Text>
-                        <Button variant="primary">Go somewhere</Button>
-                    </Card.Body>
-                </Card>
-            </div>
-            
+
         </>
 
     )
