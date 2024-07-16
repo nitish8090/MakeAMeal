@@ -23,13 +23,19 @@ function Header() {
             </Link>
           </Nav>
           <div className="d-flex text-right">
-            <a className='mx-2'>
+            <a className='mx-2' href="https://www.instagram.com/ni30.jpg/" target="_blank" rel="noopener noreferrer">
               <h3><i className="fa fa-brands fa-instagram"></i></h3>
             </a>
-            <a className='mx-2'>
+            <a className='mx-2' href="https://twitter.com/Ni30Patel" target="_blank" rel="noopener noreferrer">
+              <h3><i className="fa fa-brands fa-twitter"></i></h3>
+            </a>
+            <a className='mx-2' href="https://github.com/nitish8090" target="_blank" rel="noopener noreferrer">
+              <h3><i className="fa fa-brands fa-github"></i></h3>
+            </a>
+            <a className='mx-2' href="https://www.youtube.com/@nitishpatelyt" target="_blank" rel="noopener noreferrer">
               <h3><i className='fa fa-brands fa-youtube'></i></h3>
             </a>
-            <a className='mx-2'>
+            <a className='mx-2' href="https://www.linkedin.com/in/nitish-patel-84b0671b3/" target="_blank" rel="noopener noreferrer">
               <h3><i className="fa-brands fa-linkedin"></i></h3>
             </a>
           </div>

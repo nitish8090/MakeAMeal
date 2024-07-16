@@ -4,5 +4,5 @@ export default interface Recipe {
     cover: string
     ingredients: []
     cooking_steps: []
-    comments?: []
+    comments: []
 }

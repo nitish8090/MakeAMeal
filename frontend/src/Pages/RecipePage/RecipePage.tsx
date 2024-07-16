@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import MealIcon from '../../assets/meal-icon.png'
 import { Button, Card, Col, Container, Form, Image, ListGroup, Row } from 'react-bootstrap';
 import Recipe from '../../interfaces/Recipe.interface';
 
@@ -11,10 +10,42 @@ function RecipePage() {
   const params = useParams();
   const [recipe, setRecipe] = useState<Recipe>({
     id: 0,
-    name: ''
+    name: '',
+    cover: '',
+    ingredients: [],
+    cooking_steps: [],
+    comments: []
   });
 
-  const [page, setPage] = useState(1)
+  const [recipeComment, setRecipeComment] = useState({
+    user: '',
+    comment: ''
+  })
+
+  const [page, setPage] = useState(1);
+  const [validated, setValidated] = useState(false);
+
+  const submitComment = (event: any) => {
+    const form = event.currentTarget;
+    event.preventDefault();
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      setValidated(true);
+      return
+    }
+
+    setValidated(true);
+    console.log(recipeComment)
+
+    axios.post(`http://localhost:8000/recipe-book/recipe/${params.id}/comment/`, recipeComment).then(
+      response => {
+        const updateComments = [...recipe.comments, response.data]
+        setRecipe({...recipe, comments: updateComments})
+      }
+    ).catch(error => {
+      console.log(error)
+    })
+  }
 
   useEffect(() => {
     axios.get(`http://localhost:8000/recipe-book/recipe/${params.id}/`).then(
@@ -49,7 +80,7 @@ function RecipePage() {
                 <h1>Ingredients</h1>
                 <ListGroup className='p-2'>
                   {recipe.ingredients && recipe.ingredients.map(i => (
-                    <ListGroup.Item variant="secondary"> 
+                    <ListGroup.Item variant="secondary">
                       <Form.Check type={'checkbox'} label={i.name} />
                     </ListGroup.Item>
                   ))}
@@ -65,7 +96,7 @@ function RecipePage() {
                   {recipe.cooking_steps && recipe.cooking_steps.map(step => (
                     <>
                       <ListGroup.Item
-                      variant="secondary"
+                        variant="secondary"
                         as="li"
                         className="d-flex justify-content-between align-items-start"
                       >
@@ -82,29 +113,51 @@ function RecipePage() {
                 </div>
               </div>
             )}
-
           </Col>
         </Row>
       </Container>
-      <Container>
+      <Container fluid>
         <Row>
           <Col lg={5} className='p-4'>
-            <h2>Add a Comment</h2>
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="Your name" />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Comment</Form.Label>
-                <Form.Control as="textarea" rows={3} />
-              </Form.Group>
-            </Form>
+            <Card bg="secondary w-100">
+              <Card.Body>
+                <h2>Add a Comment</h2>
+                <Form noValidate validated={validated} onSubmit={submitComment}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Your name"
+                      required
+                      value={recipeComment.user}
+                      onChange={e => { setRecipeComment({ ...recipeComment, user: e.target.value }) }}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please provide your name or email.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Comment</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      required
+                      value={recipeComment.comment}
+                      onChange={e => { setRecipeComment({ ...recipeComment, comment: e.target.value }) }}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please enter a few words.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Button type="submit">Submit</Button>
+                </Form>
+              </Card.Body>
+            </Card>
           </Col>
           <Col lg={7} className='p-4'>
             <h2>Comments</h2>
             {recipe.comments && recipe.comments.map(comment => (
-              <Card>
+              <Card className='my-2'>
                 <Card.Body>
                   <Card.Subtitle className="mb-2 text-muted">{comment.user}</Card.Subtitle>
                   <Card.Text>

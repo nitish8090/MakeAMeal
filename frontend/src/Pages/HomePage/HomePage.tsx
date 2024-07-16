@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 // import MealImage from '../../assets/meal-icon.png'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Recipe from '../../interfaces/Recipe.interface';
 
 import './HomePage.scss';
@@ -10,6 +10,8 @@ import './HomePage.scss';
 function HomePage() {
 
     const [recipes, setRecipes] = useState<Recipe[]>([])
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         axios.get('http://localhost:8000/recipe-book/recipe/').then(
@@ -40,14 +42,12 @@ function HomePage() {
                     <Row className='p-4'>
                         {recipes.map(recipe => (
                             <Col lg={3}>
-                                <Card className='recipe-card bg-primary'>
-                                    <Card.Img variant="top" src={`${import.meta.env.VITE_STATIC_IMAGE_URL}/${recipe.cover}`} />
+                                <Card className='recipe-card bg-primary' onClick={() => { navigate(`/${recipe.id}`) }}>
+                                    <Card.Img className='recipe-image' variant="bottom" src={`${import.meta.env.VITE_STATIC_IMAGE_URL}/${recipe.cover}`} />
                                     <Card.Body>
-                                        <Card.Title>{recipe.name}</Card.Title>
+                                        <Card.Title className='recipe-title'>{recipe.name}</Card.Title>
                                         <div className='d-flex justify-content-center'>
-                                            <Link to={`/${recipe.id}`}>
-                                                <Button className='px-4' variant="secondary">View</Button>
-                                            </Link>
+                                            <Button className='px-4' variant="secondary">View</Button>
                                         </div>
                                     </Card.Body>
                                 </Card>
@@ -56,7 +56,6 @@ function HomePage() {
                     </Row>
                 </Container>
             </div>
-
         </>
 
     )
