@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Button, Card, Col, Container, Form, Image, ListGroup, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, ListGroup, Row } from 'react-bootstrap';
 import Recipe from '../../interfaces/Recipe.interface';
 
 function RecipePage() {

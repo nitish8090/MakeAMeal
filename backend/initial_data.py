@@ -92,3 +92,9 @@ CookingSteps.objects.bulk_create([
     CookingSteps(step='Deep-fry rolls until crispy and golden brown.',step_no='5', recipe=sr),
     CookingSteps(step='Serve hot with dipping sauce.', step_no='6', recipe=sr),
 ])
+
+
+hn = Recipe.objects.filter(name='Hakka Noodles').update(cover='/dishes/hakka-noodles.jpeg')
+m = Recipe.objects.filter(name='Manchurian').update(cover='/dishes/manchurain.jpeg')
+ssc = Recipe.objects.filter(name='Sweet and Sour Chicken').update(cover='/dishes/swee-sour-chicken.jpg')
+sr = Recipe.objects.filter(name='Spring Rolls').update(cover='/dishes/spring-roll.png')
