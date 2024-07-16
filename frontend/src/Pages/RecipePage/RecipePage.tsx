@@ -37,7 +37,7 @@ function RecipePage() {
     setValidated(true);
     console.log(recipeComment)
 
-    axios.post(`http://localhost:8000/recipe-book/recipe/${params.id}/comment/`, recipeComment).then(
+    axios.post(`${import.meta.env.VITE_BACKEND_URL}/recipe-book/recipe/${params.id}/comment/`, recipeComment).then(
       response => {
         const updateComments = [...recipe.comments, response.data]
         setRecipe({...recipe, comments: updateComments})
@@ -48,7 +48,7 @@ function RecipePage() {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/recipe-book/recipe/${params.id}/`).then(
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/recipe-book/recipe/${params.id}/`).then(
       response => {
         setRecipe(response.data)
       }

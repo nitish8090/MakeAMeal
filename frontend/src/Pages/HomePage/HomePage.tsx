@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
-// import MealImage from '../../assets/meal-icon.png'
 import axios from 'axios';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Recipe from '../../interfaces/Recipe.interface';
 
 import './HomePage.scss';
@@ -14,7 +13,7 @@ function HomePage() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        axios.get('http://localhost:8000/recipe-book/recipe/').then(
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/recipe-book/recipe/`).then(
             response => {
                 setRecipes(response.data)
             }
